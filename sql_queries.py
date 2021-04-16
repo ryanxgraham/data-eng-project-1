@@ -11,11 +11,11 @@ time_table_drop = "DROP TABLE IF EXISTS time;"
 songplay_table_create = ("""
     CREATE TABLE IF NOT EXISTS songplays (
         songplay_id SERIAL PRIMARY KEY,
-        start_time BIGINT NOT NULL,
-        user_id TEXT NOT NULL,
+        start_time BIGINT REFERENCES time(start_time),
+        user_id TEXT NOT NULL REFERENCES users(user_id),
         level TEXT,
-        song_id TEXT NOT NULL,
-        artist_id TEXT NOT NULL,
+        song_id TEXT REFERENCES songs(song_id),
+        artist_id TEXT REFERENCES artists(artist_id),
         session_id INT,
         location TEXT,
         user_agent TEXT
@@ -24,7 +24,7 @@ songplay_table_create = ("""
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users (
-        user_id INT PRIMARY KEY,
+        user_id TEXT PRIMARY KEY,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
         gender TEXT,
@@ -34,9 +34,9 @@ user_table_create = ("""
 
 song_table_create = ("""
     CREATE TABLE IF NOT EXISTS songs (
-        song_id TEXT PRIMARY KEY
+        song_id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
-        artist_id  TEXT NOT NULL,
+        artist_id TEXT NOT NULL REFERENCES artists(artist_id),
         year INT,
         duration NUMERIC(9, 5)
     );

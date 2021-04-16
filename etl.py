@@ -12,13 +12,15 @@ def process_song_file(cur, filepath):
     # open song file
     df = pd.read_json(filepath, lines=True)
 
+    # insert artist record
+    artist_data = list(df.values[0, [0, 4, 2, 1, 3]])
+    cur.execute(artist_table_insert, artist_data)
+
     # insert song record
     song_data = list(df.values[0,[7, 8, 0, 9, 5]])
     cur.execute(song_table_insert, song_data)
     
-    # insert artist record
-    artist_data = list(df.values[0, [0, 4, 2, 1, 3]])
-    cur.execute(artist_table_insert, artist_data)
+
 
 
 def process_log_file(cur, filepath):
